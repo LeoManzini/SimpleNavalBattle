@@ -2,6 +2,7 @@
 A little sea battle game with what I know about Java.
 
 It consists of a field with X by Y blocks; 
+
 The player can choose between play with another player or play with the
 computer;
 Any player can have xpto ships within 1/3 size limit of the board;
