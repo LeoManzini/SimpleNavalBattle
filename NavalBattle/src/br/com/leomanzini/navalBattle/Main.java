@@ -1,6 +1,7 @@
 package br.com.leomanzini.navalBattle;
 
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -15,10 +16,10 @@ public class Main {
 			boolean ex = false;
 			try {
 				sc = new Scanner(System.in);
-				System.out.println("Enter with the board width: ");
+				System.out.println("Enter with the board lines: ");
 				coordinateX = sc.nextInt();
 				
-				System.out.println("Enter with the board height: ");
+				System.out.println("Enter with the board columns: ");
 				coordinateY = sc.nextInt();
 				
 				ex = true;
@@ -65,9 +66,35 @@ public class Main {
 		boardPlayer2 = new int [coordinateX][coordinateY];
 	}
 	
+	public static void insertShipsAtBoard () {
+		int remainingNumberOfShips = numberOfShips;
+		Random randNumber = new Random();
+		do {
+			for (int[] lines : boardPlayer1) {
+				for (int columns : lines) {
+					if (randNumber.nextInt(100) <= 10) {
+						if (columns == 0) {
+							System.out.println("Insere navio.");
+							columns = 1;
+							remainingNumberOfShips--;
+							break;
+						}
+						if (remainingNumberOfShips <= 0) {
+							break;
+						}
+					}
+				}
+				if (remainingNumberOfShips <= 0) {
+					break;
+				}
+			}
+		} while(remainingNumberOfShips > 0);
+	}
+	
 	public static void main(String args[]) {
 		getBoardSize();
 		calculateMaxNumberOfShips();
+		setPlayerBoard();
 		getNumberOfShips();
 	}
 }
