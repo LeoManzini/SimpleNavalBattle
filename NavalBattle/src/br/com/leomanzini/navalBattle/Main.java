@@ -7,10 +7,11 @@ import java.util.Scanner;
 public class Main {
 	
 	//Declaring some global variables
+	static String namePlayer1, namePlayer2;
 	static int coordinateX, coordinateY, numberOfShips, maxNumberOfShips;
 	static int boardPlayer1[][], boardPlayer2[][];
 	
-	public static void getBoardSize () {
+	public static void setBoardSize () {
 		Scanner sc = null;
 		for(;;) {
 			boolean ex = false;
@@ -37,11 +38,19 @@ public class Main {
 		}
 	}
 	
+	public static void setPlayerName () {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter with the player 1 name: ");
+		namePlayer1 = sc.next();
+		System.out.println("Enter with the player 2 name: ");
+		namePlayer2 = sc.next();
+	}
+	
 	public static void calculateMaxNumberOfShips () {
 		maxNumberOfShips = (coordinateX * coordinateY) / 3;
 	}
 	
-	public static void getNumberOfShips () {
+	public static void setNumberOfShips () {
 		Scanner sc = null;
 		for(;;) {
 			boolean ex = false;
@@ -112,8 +121,8 @@ public class Main {
 		boardPlayer2 = insertShipsAtNewBoard();
 	}
 	
-	public static void printBoard() {
-		System.out.println("|----- Player 1 -----|");
+	public static void print(String playerName, int[][] board, boolean yourBoard) {
+		System.out.println("|----- " + playerName + " -----|");
 		String boardLetter = "    ";
 		char columnLetter = 65;
 		for(int i = 0; i < coordinateY; i++) {
@@ -121,9 +130,8 @@ public class Main {
 		}
 		System.out.println(boardLetter);
 		String boardLine = "";
-		boolean yourBoard = true;
 		int lineNumber = 1;
-		for (int line [] : boardPlayer1) {
+		for (int line [] : board) {
 			if (lineNumber < 10) {
 				boardLine = (lineNumber++) + "  |";
 			} else {
@@ -154,11 +162,18 @@ public class Main {
 		}
 	}
 	
+	public static void printBoard () {
+		print(namePlayer1, boardPlayer1, true);
+		System.out.println();
+		print(namePlayer2, boardPlayer2, false);
+	}
+	
 	public static void main(String args[]) {
-		getBoardSize();
+		setPlayerName();
+		setBoardSize();
 		calculateMaxNumberOfShips();
 		setPlayerBoard();
-		getNumberOfShips();
+		setNumberOfShips();
 		insertShipsAtPlayersBoard();
 		printBoard();
 		
