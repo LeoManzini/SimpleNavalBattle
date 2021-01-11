@@ -10,6 +10,7 @@ A little sea battle game with what I know about Java.
 - The first player that destruct all the opponent's ships wins;
 - The game should show the "Board";
 - The simbols are:
-  - "Void" - Nothing there;
-  - "x" - Wrong shoot;
-  - "d" - Destroyed a ship;
+  - " " - Nothing there;
+  - "X" - Wrong shoot;
+  - "D" - Destroyed a ship;
+  - "S" - Ship.
