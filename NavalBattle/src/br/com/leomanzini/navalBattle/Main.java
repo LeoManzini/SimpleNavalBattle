@@ -56,7 +56,7 @@ public class Main {
 			boolean ex = false;
 			try {
 				sc = new Scanner(System.in);
-				System.out.println("Max number of ships for the currents boards: " + maxNumberOfShips);
+				System.out.println("Max number of ships for the current board size: " + maxNumberOfShips);
 				System.out.println("Enter with the number of ships: ");
 				numberOfShips = sc.nextInt();
 				
