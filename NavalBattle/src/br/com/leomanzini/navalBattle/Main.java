@@ -21,7 +21,12 @@ public class Main {
 				
 				System.out.println("Enter with the board columns: ");
 				coordinateY = sc.nextInt();
-				
+				if (coordinateY > 26 || 0 > coordinateY) {
+					while (coordinateY > 26 || 0 > coordinateY) {
+						System.out.println("Max number of columns is 26, enter with a valid input!");
+						coordinateY = sc.nextInt();
+					}
+				}
 				ex = true;
 			} catch(InputMismatchException err) {
 				System.out.println("Enter with a integer number!\n");
@@ -71,15 +76,18 @@ public class Main {
 	}
 	
 	public static int[][] insertShipsAtNewBoard () {
+		int[][] newBoard = createVoidBoard();
 		int remainingNumberOfShips = numberOfShips;
 		Random randNumber = new Random();
-		int[][] newBoard = createVoidBoard();
+		int x = 0, y = 0;
 		do {
+			x = 0;
+			y = 0;
 			for (int[] lines : newBoard) {
 				for (int columns : lines) {
 					if (randNumber.nextInt(100) <= 10) {
 						if (columns == 0) {
-							columns = 1;
+							newBoard[x][y] = 1;
 							remainingNumberOfShips--;
 							break;
 						}
@@ -87,13 +95,15 @@ public class Main {
 							break;
 						}
 					}
+					y++;
 				}
+				y = 0;
+				x++;
 				if (remainingNumberOfShips <= 0) {
 					break;
 				}
 			}
 		} while(remainingNumberOfShips > 0);
-		System.out.println("Player 1 ships inserted!");
 		return newBoard;
 	}
 	
@@ -102,11 +112,55 @@ public class Main {
 		boardPlayer2 = insertShipsAtNewBoard();
 	}
 	
+	public static void printBoard() {
+		System.out.println("|----- Player 1 -----|");
+		String boardLetter = "    ";
+		char columnLetter = 65;
+		for(int i = 0; i < coordinateY; i++) {
+			boardLetter += (columnLetter++) + " ";
+		}
+		System.out.println(boardLetter);
+		String boardLine = "";
+		boolean yourBoard = true;
+		int lineNumber = 1;
+		for (int line [] : boardPlayer1) {
+			if (lineNumber < 10) {
+				boardLine = (lineNumber++) + "  |";
+			} else {
+				boardLine = (lineNumber++) + " |";
+			}
+			for (int column : line) {
+				switch (column) {
+					case 0 : // Don't have nothing
+						boardLine += " |";
+						break;
+					case 1 : // Have a ship in this place
+						if (yourBoard) {
+							boardLine += "S|";
+							break;
+						} else {
+							boardLine += " |";
+							break;
+						}
+					case 2 : // Wrong shoot
+						boardLine += "X|";
+						break;
+					case 3 : // Hit the shoot
+						boardLine += "D|";
+						break;
+				}
+			}
+			System.out.println(boardLine);
+		}
+	}
+	
 	public static void main(String args[]) {
 		getBoardSize();
 		calculateMaxNumberOfShips();
 		setPlayerBoard();
 		getNumberOfShips();
 		insertShipsAtPlayersBoard();
+		printBoard();
+		
 	}
 }
