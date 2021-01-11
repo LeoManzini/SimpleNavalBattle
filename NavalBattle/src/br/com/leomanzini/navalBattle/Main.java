@@ -61,20 +61,24 @@ public class Main {
 		}
 	}
 	
-	public static void setPlayerBoard () {
-		boardPlayer1 = new int [coordinateX][coordinateY];
-		boardPlayer2 = new int [coordinateX][coordinateY];
+	public static int[][] createVoidBoard () {
+		return new int [coordinateX][coordinateY];
 	}
 	
-	public static void insertShipsAtBoard () {
+	public static void setPlayerBoard () {
+		boardPlayer1 = createVoidBoard();
+		boardPlayer2 = createVoidBoard();
+	}
+	
+	public static int[][] insertShipsAtNewBoard () {
 		int remainingNumberOfShips = numberOfShips;
 		Random randNumber = new Random();
+		int[][] newBoard = createVoidBoard();
 		do {
-			for (int[] lines : boardPlayer1) {
+			for (int[] lines : newBoard) {
 				for (int columns : lines) {
 					if (randNumber.nextInt(100) <= 10) {
 						if (columns == 0) {
-							System.out.println("Insere navio.");
 							columns = 1;
 							remainingNumberOfShips--;
 							break;
@@ -89,6 +93,13 @@ public class Main {
 				}
 			}
 		} while(remainingNumberOfShips > 0);
+		System.out.println("Player 1 ships inserted!");
+		return newBoard;
+	}
+	
+	public static void insertShipsAtPlayersBoard () {
+		boardPlayer1 = insertShipsAtNewBoard();
+		boardPlayer2 = insertShipsAtNewBoard();
 	}
 	
 	public static void main(String args[]) {
@@ -96,5 +107,6 @@ public class Main {
 		calculateMaxNumberOfShips();
 		setPlayerBoard();
 		getNumberOfShips();
+		insertShipsAtPlayersBoard();
 	}
 }
