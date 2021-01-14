@@ -10,9 +10,10 @@ public class Main {
 	static String namePlayer1, namePlayer2;
 	static int coordinateX, coordinateY, numberOfShips, maxNumberOfShips;
 	static int boardPlayer1[][], boardPlayer2[][];
+	static Scanner sc = new Scanner(System.in);
 	
 	public static void setBoardSize () {
-		Scanner sc = null;
+		sc = null;
 		for(;;) {
 			boolean ex = false;
 			try {
@@ -39,7 +40,6 @@ public class Main {
 	}
 	
 	public static void setPlayerName () {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter with the player 1 name: ");
 		namePlayer1 = sc.next();
 		System.out.println("Enter with the player 2 name: ");
@@ -51,7 +51,7 @@ public class Main {
 	}
 	
 	public static void setNumberOfShips () {
-		Scanner sc = null;
+		sc = null;
 		for(;;) {
 			boolean ex = false;
 			try {
@@ -150,16 +150,51 @@ public class Main {
 							boardLine += " |";
 							break;
 						}
-					case 2 : // Wrong shoot
+					case 2 : // Wrong shot
 						boardLine += "X|";
 						break;
-					case 3 : // Hit the shoot
+					case 3 : // Hit the shot
 						boardLine += "D|";
 						break;
 				}
 			}
 			System.out.println(boardLine);
 		}
+	}
+	
+	public static void playerAction () {
+		System.out.println("Enter with your shot position: ");
+		String playerShot = sc.next();
+		
+		int totalNumbers = (coordinateY > 10) ? 2 : 1;
+		
+		String checkExpression = "^[A-Za-z]{1}[0-9]{" + totalNumbers + "}$";
+		
+		if (playerShot.matches(checkExpression)) {
+			String shot = playerShot.toLowerCase();
+			int positionX = shot.charAt(0) - 97;
+			int positionY = Integer.parseInt(shot.substring(1)) - 1;
+			
+			if(validatePlayerPosition(positionX, positionY)) {
+				System.out.println("Valid coordinate.");
+			}
+					
+		} else {
+			System.out.println("Invalid Coordinate.");
+		}
+	}
+	
+	public static boolean validatePlayerPosition(int positionX, int positionY) {
+		boolean feedback = true;
+		if(positionX > coordinateX -1) {
+			feedback = false;
+			System.out.println("Letter position can't be higher than: " + (char) (coordinateX + 64));
+		}
+		if(positionY > coordinateY) {
+			feedback = false;
+			System.out.println("Number position can't be higher than: " + coordinateY);
+		}
+		return feedback;
 	}
 	
 	public static void printBoard () {
@@ -176,6 +211,6 @@ public class Main {
 		setNumberOfShips();
 		insertShipsAtPlayersBoard();
 		printBoard();
-		
+		playerAction();
 	}
 }
