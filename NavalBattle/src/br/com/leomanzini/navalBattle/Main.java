@@ -123,8 +123,8 @@ public class Main {
 	
 	public static void print(String playerName, int[][] board, boolean yourBoard) {
 		System.out.println("|----- " + playerName + " -----|");
-		String boardLetter = "    ";
 		char columnLetter = 65;
+		String boardLetter = "    ";
 		for(int i = 0; i < coordinateY; i++) {
 			boardLetter += (columnLetter++) + " ";
 		}
@@ -162,39 +162,60 @@ public class Main {
 		}
 	}
 	
-	public static void playerAction () {
+	public static String setPlayerShot() {
 		System.out.println("Enter with your shot position: ");
-		String playerShot = sc.next();
-		
-		int totalNumbers = (coordinateY > 10) ? 2 : 1;
-		
-		String checkExpression = "^[A-Za-z]{1}[0-9]{" + totalNumbers + "}$";
-		
-		if (playerShot.matches(checkExpression)) {
-			String shot = playerShot.toLowerCase();
-			int positionX = shot.charAt(0) - 97;
-			int positionY = Integer.parseInt(shot.substring(1)) - 1;
-			
-			if(validatePlayerPosition(positionX, positionY)) {
-				System.out.println("Valid coordinate.");
-			}
-					
-		} else {
-			System.out.println("Invalid Coordinate.");
-		}
+		return sc.next();
 	}
 	
-	public static boolean validatePlayerPosition(int positionX, int positionY) {
+	public static boolean validatePlayerShot(String playerShot) {
+		int totalNumbers = (coordinateY > 10) ? 2 : 1;
+		String checkExpression = "^[A-Za-z]{1}[0-9]{" + totalNumbers + "}$";
+		return playerShot.matches(checkExpression);
+	}
+	
+	public static int[] getPlayerPositions(String playerShot) {
+		String shot = playerShot.toLowerCase();
+		int[] playerPosition = new int[2];
+		playerPosition[0] = shot.charAt(0) - 97;
+		playerPosition[1] = Integer.parseInt(shot.substring(1)) - 1;
+		return playerPosition;
+	}
+	
+	public static boolean validatePlayerPosition(int[] playerPosition) {
 		boolean feedback = true;
-		if(positionX > coordinateX -1) {
+		if(playerPosition[0] > coordinateX -1) {
 			feedback = false;
 			System.out.println("Letter position can't be higher than: " + (char) (coordinateX + 64));
 		}
-		if(positionY > coordinateY) {
+		if(playerPosition[1] > coordinateY) {
 			feedback = false;
 			System.out.println("Number position can't be higher than: " + coordinateY);
 		}
 		return feedback;
+	}
+	
+	public static boolean playerAction () {
+		boolean validate = true;
+		String playerShot = setPlayerShot();
+		if (validatePlayerShot(playerShot)) {
+			int[] playerPosition = getPlayerPositions(playerShot);
+			if(validatePlayerPosition(playerPosition)) {
+				if (boardPlayer2[playerPosition[0]][playerPosition[1]] == 1) {
+					boardPlayer2[playerPosition[0]][playerPosition[1]] = 3;
+					System.out.println("You hit a ship!");
+				} else {
+					boardPlayer2[playerPosition[0]][playerPosition[1]] = 2;
+					System.out.println("You missed the shot...");
+				}
+			} else {
+				validate = false;
+			}
+					
+		} else {
+			validate = false;
+			System.out.println("Invalid Coordinate.");
+		}
+		return validate;
 	}
 	
 	public static void printBoard () {
@@ -210,7 +231,13 @@ public class Main {
 		setPlayerBoard();
 		setNumberOfShips();
 		insertShipsAtPlayersBoard();
-		printBoard();
-		playerAction();
+		
+		boolean activeGame = true;
+		do {
+			printBoard();
+			if (playerAction()) {
+				
+			}
+		} while(activeGame);
 	}
 }
