@@ -17,6 +17,8 @@ public class Main {
 	static final int SHIP = 1;
 	static final int MISSED = 2;
 	static final int HIT = 3;
+	static final int XPOSITION = 0;
+	static final int YPOSITION = 1;
 	
 	/**
 	 * Declaring some global variables
@@ -25,6 +27,7 @@ public class Main {
 	static int coordinateX, coordinateY, numberOfShips, maxNumberOfShips;
 	static int boardPlayer1[][], boardPlayer2[][];
 	static Scanner sc = new Scanner(System.in);
+	static int player1Ships, player2Ships;
 	
 	/**
 	 * Set the size of the board for both players
@@ -101,6 +104,11 @@ public class Main {
 		}
 	}
 	
+	public static void setTotalPlayerShipsCounter() {
+		player1Ships = numberOfShips;
+		player2Ships = numberOfShips;
+	}
+	
 	/**
 	 * Create the void board
 	 * @return matrix with the board size
@@ -132,8 +140,8 @@ public class Main {
 			for (int[] lines : newBoard) {
 				for (int columns : lines) {
 					if (randNumber.nextInt(100) <= 10) {
-						if (columns == 0) {
-							newBoard[x][y] = 1;
+						if (columns == NOTHING) {
+							newBoard[x][y] = SHIP;
 							remainingNumberOfShips--;
 							break;
 						}
@@ -193,10 +201,10 @@ public class Main {
 			}*/
 			for (int column : line) {
 				switch (column) {
-					case 0 : // Don't have nothing
+					case NOTHING : 
 						boardLine += " |";
 						break;
-					case 1 : // Have a ship in this place
+					case SHIP : 
 						if (yourBoard) {
 							boardLine += "S|";
 							break;
@@ -204,10 +212,10 @@ public class Main {
 							boardLine += " |";
 							break;
 						}
-					case 2 : // Wrong shot
+					case MISSED : 
 						boardLine += "X|";
 						break;
-					case 3 : // Hit the shot
+					case HIT :
 						boardLine += "D|";
 						break;
 				}
@@ -244,8 +252,8 @@ public class Main {
 	public static int[] getPlayerPositions(String playerShot) {
 		String shot = playerShot.toLowerCase();
 		int[] playerPosition = new int[2];
-		playerPosition[0] = shot.charAt(0) - 97;
-		playerPosition[1] = Integer.parseInt(shot.substring(1)) - 1;
+		playerPosition[XPOSITION] = shot.charAt(0) - 97;
+		playerPosition[YPOSITION] = Integer.parseInt(shot.substring(1)) - 1;
 		return playerPosition;
 	}
 	
@@ -256,11 +264,11 @@ public class Main {
 	 */
 	public static boolean validatePlayerPosition(int[] playerPosition) {
 		boolean feedback = true;
-		if(playerPosition[0] > coordinateX -1) {
+		if(playerPosition[XPOSITION] > coordinateX -1) {
 			feedback = false;
 			System.out.println("Letter position can't be higher than: " + (char) (coordinateX + 64));
 		}
-		if(playerPosition[1] > coordinateY) {
+		if(playerPosition[YPOSITION] > coordinateY) {
 			feedback = false;
 			System.out.println("Number position can't be higher than: " + coordinateY);
 		}
@@ -274,19 +282,21 @@ public class Main {
 	 */
 	public static void insertActionsToBoard (int[] playerPosition, int player) {
 		if(player == 1) {
-			if (boardPlayer2[playerPosition[0]][playerPosition[1]] == 1) {
-				boardPlayer2[playerPosition[0]][playerPosition[1]] = 3;
+			if (boardPlayer2[playerPosition[XPOSITION]][playerPosition[YPOSITION]] == SHIP) {
+				boardPlayer2[playerPosition[XPOSITION]][playerPosition[YPOSITION]] = HIT;
+				player2Ships--;
 				System.out.println("You hit a ship!");
 			} else {
-				boardPlayer2[playerPosition[0]][playerPosition[1]] = 2;
+				boardPlayer2[playerPosition[XPOSITION]][playerPosition[YPOSITION]] = MISSED;
 				System.out.println("You missed the shot...");
 			}
 		} else {
-			if (boardPlayer1[playerPosition[0]][playerPosition[1]] == 1) {
-				boardPlayer1[playerPosition[0]][playerPosition[1]] = 3;
+			if (boardPlayer1[playerPosition[XPOSITION]][playerPosition[YPOSITION]] == SHIP) {
+				boardPlayer1[playerPosition[XPOSITION]][playerPosition[YPOSITION]] = HIT;
+				player1Ships--;
 				System.out.println("You hit a ship!");
 			} else {
-				boardPlayer1[playerPosition[0]][playerPosition[1]] = 2;
+				boardPlayer1[playerPosition[XPOSITION]][playerPosition[YPOSITION]] = MISSED;
 				System.out.println("You missed the shot...");
 			}
 		}
@@ -326,16 +336,23 @@ public class Main {
 	public static void main(String args[]) {
 		setPlayerName();
 		setBoardSize();
-		calculateMaxNumberOfShips();
 		setPlayerBoard();
+		calculateMaxNumberOfShips();
 		setNumberOfShips();
 		insertShipsAtPlayersBoard();
+		setTotalPlayerShipsCounter();
 		
 		boolean activeGame = true;
 		do {
 			printBoard();
 			if (playerAction()) {
-				
+				Random computerCoordinates = new Random();
+				int[] playerPosition = new int[2];
+				int numberGenerated = computerCoordinates.nextInt(coordinateX);
+				playerPosition[XPOSITION] = (numberGenerated == coordinateX) ? --numberGenerated : numberGenerated;
+				numberGenerated = computerCoordinates.nextInt(coordinateY);
+				playerPosition[YPOSITION] = (numberGenerated == coordinateY) ? --numberGenerated : numberGenerated;
+				insertActionsToBoard(playerPosition, 2);
 			}
 		} while(activeGame);
 	}
