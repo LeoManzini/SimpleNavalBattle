@@ -325,6 +325,19 @@ public class Main {
 	}
 	
 	/**
+	 * Machine action
+	 */
+	public static void computerAction() {
+		Random computerCoordinates = new Random();
+		int[] playerPosition = new int[2];
+		int numberGenerated = computerCoordinates.nextInt(coordinateX);
+		playerPosition[XPOSITION] = (numberGenerated == coordinateX) ? --numberGenerated : numberGenerated;
+		numberGenerated = computerCoordinates.nextInt(coordinateY);
+		playerPosition[YPOSITION] = (numberGenerated == coordinateY) ? --numberGenerated : numberGenerated;
+		insertActionsToBoard(playerPosition, 2);
+	}
+	
+	/**
 	 * Function to print the board
 	 */
 	public static void printBoard () {
@@ -346,13 +359,7 @@ public class Main {
 		do {
 			printBoard();
 			if (playerAction()) {
-				Random computerCoordinates = new Random();
-				int[] playerPosition = new int[2];
-				int numberGenerated = computerCoordinates.nextInt(coordinateX);
-				playerPosition[XPOSITION] = (numberGenerated == coordinateX) ? --numberGenerated : numberGenerated;
-				numberGenerated = computerCoordinates.nextInt(coordinateY);
-				playerPosition[YPOSITION] = (numberGenerated == coordinateY) ? --numberGenerated : numberGenerated;
-				insertActionsToBoard(playerPosition, 2);
+				computerAction();
 			}
 		} while(activeGame);
 	}
