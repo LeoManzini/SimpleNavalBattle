@@ -364,6 +364,29 @@ public class Main {
 	}
 	
 	/**
+	 * Verify if the player already did a shot
+	 * @param board pass the player board
+	 */
+	public static void verifyDuplicatedShot(int[][] board) {
+		for (int line [] : board) {
+			for (int column : line) {
+				while(true) {
+					switch (column) {
+						case NOTHING : 
+							break;
+						case SHIP : 
+							break;
+						case MISSED : 
+							continue;
+						case HIT :
+							continue;
+					}
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Validate if one of the players won the game
 	 * @return true if we have a winner false if not
 	 */
