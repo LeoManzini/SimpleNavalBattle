@@ -325,15 +325,32 @@ public class Main {
 	}
 	
 	/**
+	 * Record the computer shot into an array and return it
+	 * @return array with the computer shot positions
+	 */
+	public static int[] getComputerShot() {
+		int[] playerPosition = new int[2];
+		playerPosition[XPOSITION] = getRandomShot(coordinateX);
+		playerPosition[YPOSITION] = getRandomShot(coordinateY);
+		return playerPosition;
+	}
+	
+	/**
+	 * Generate a random number to the computer shot
+	 * @param limit number of x or y limit 
+	 * @return the random generated number
+	 */
+	public static int getRandomShot(int limit) {
+		Random computerCoordinates = new Random();
+		int numberGenerated = computerCoordinates.nextInt(limit);
+		return (numberGenerated == limit) ? --numberGenerated : numberGenerated;
+	}
+	
+	/**
 	 * Machine action
 	 */
 	public static void computerAction() {
-		Random computerCoordinates = new Random();
-		int[] playerPosition = new int[2];
-		int numberGenerated = computerCoordinates.nextInt(coordinateX);
-		playerPosition[XPOSITION] = (numberGenerated == coordinateX) ? --numberGenerated : numberGenerated;
-		numberGenerated = computerCoordinates.nextInt(coordinateY);
-		playerPosition[YPOSITION] = (numberGenerated == coordinateY) ? --numberGenerated : numberGenerated;
+		int[] playerPosition = getComputerShot();
 		insertActionsToBoard(playerPosition, 2);
 	}
 	
@@ -346,6 +363,37 @@ public class Main {
 		print(namePlayer2, boardPlayer2, false);
 	}
 	
+	/**
+	 * Validate if one of the players won the game
+	 * @return true if we have a winner false if not
+	 */
+	public static boolean winCondition(boolean loop) {
+		if(player2Ships <= 0) {
+			System.out.println(namePlayer1 + " win!");
+			return false;
+		}
+		if(player1Ships <=0) {
+			System.out.println(namePlayer2 + " win!");
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Run the game into a infinite loop
+	 */
+	public static void gameLoop() {
+		boolean loop = true;
+		do {
+			printBoard();
+			if (playerAction()) {
+				computerAction();
+				if(!(loop = winCondition(loop))) break;
+			}
+		} while(loop);
+		printBoard();
+	}
+	
 	public static void main(String args[]) {
 		setPlayerName();
 		setBoardSize();
@@ -354,13 +402,6 @@ public class Main {
 		setNumberOfShips();
 		insertShipsAtPlayersBoard();
 		setTotalPlayerShipsCounter();
-		
-		boolean activeGame = true;
-		do {
-			printBoard();
-			if (playerAction()) {
-				computerAction();
-			}
-		} while(activeGame);
+		gameLoop();
 	}
 }
