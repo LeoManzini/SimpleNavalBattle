@@ -8,9 +8,15 @@ A little sea battle game with what I know about Java.
 - The game should show each board separately every shift;
 - Each shift, the player will choose where It wants to "Shoot";
 - The first player that destruct all the opponent's ships wins;
-- The game should show the "Board";
+- The game should show the "Board".
+
 - The simbols are:
   - " " - Nothing there;
   - "X" - Wrong shoot;
   - "D" - Destroyed a ship;
   - "S" - Ship.
+
+Game already ready to play, but i'll refactor into object oriented
+programation and make a better duplicated shot verification.
+
+- Game Version 1.0
