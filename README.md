@@ -17,6 +17,6 @@ A little sea battle game with what I know about Java.
   - "S" - Ship.
 
 Game already ready to play, but i'll refactor into object oriented
-programation and make a better duplicated shot verification.
+programming and make a better verification for duplicated shots.
 
 - Game Version 1.0
