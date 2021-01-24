@@ -4,6 +4,12 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Main class for the game Naval Battle, before any refactoring...
+ * @author LeoManzini
+ * @version 1.0
+ *
+ */
 public class Main {
 	
 	/**
