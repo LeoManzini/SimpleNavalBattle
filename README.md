@@ -20,3 +20,7 @@ Game already ready to play, but i'll refactor into object oriented
 programming and make a better verification for duplicated shots.
 
 - Game Version 1.0
+- Executable file at the folder "Executable", to run the game, you have that install Java on your PC and download the NavalBattle.jar.
+- To execute: at your terminal enter at the folder that you save the .jar file and type: 
+	- java -jar NavalBattle.jar
+I hope you enjoy!
