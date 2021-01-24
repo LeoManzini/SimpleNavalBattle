@@ -63,10 +63,9 @@ public class Main {
 	 * Set the both player names
 	 */
 	public static void setPlayerName () {
-		System.out.println("Enter with the player 1 name: ");
+		System.out.println("Enter with the player name: ");
 		namePlayer1 = sc.next();
-		System.out.println("Enter with the player 2 name: ");
-		namePlayer2 = sc.next();
+		namePlayer2 = "Computer";
 	}
 	
 	/**
