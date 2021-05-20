@@ -13,7 +13,22 @@ public enum ShipPositions {
 		this.value = value;
 	}
 	
-	public Integer getValue() {
+	public int getIntValue() {
+		switch (value) {
+			case 0:
+				return 0;
+			case 1:
+				return 1;
+			case 2: 
+				return 2;
+			case 3:
+				return 3;
+			default:
+				return 0;
+		}
+	}
+	
+	public int getValue() {
 		return this.value;
 	}
 }

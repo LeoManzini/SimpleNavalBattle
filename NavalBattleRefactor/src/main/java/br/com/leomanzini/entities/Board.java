@@ -15,8 +15,9 @@ public class Board {
 	private int boardSize;
 	private int coordinateX;
 	private int coordinateY;
-	private Integer playerOneBoard[][];
-	private Integer playerTwoBoard[][];
+	private int playerOneBoard[][];
+	private int playerTwoBoard[][];
+	private ShipPositions positions;
 	private Scanner sc = new Scanner(System.in);
 	
 	public Board(int coordinateX, int coordinateY) {
@@ -52,23 +53,23 @@ public class Board {
 		this.playerTwoBoard = createVoidBoard();
 	}
 	
-	public Integer[][] createVoidBoard () {
-		return new Integer [this.coordinateX][this.coordinateY];
+	public int[][] createVoidBoard () {
+		return new int [this.coordinateX][this.coordinateY];
 	}
 	
 	public int[][] insertShipsAtNewBoard (int numberOfShips) {
-		Integer[][] newBoard = createVoidBoard();
+		int[][] newBoard = createVoidBoard();
 		int remainingNumberOfShips = numberOfShips;
 		Random randNumber = new Random();
 		int x = 0, y = 0;
 		do {
 			x = 0;
 			y = 0;
-			for (Integer[] lines : newBoard) {
-				for (Integer columns : lines) {
+			for (int[] lines : newBoard) {
+				for (int columns : lines) {
 					if (randNumber.nextInt(100) <= 10) {
-						if (columns.equals(ShipPositions.NOTHING)) {
-							newBoard[x][y] = ShipPositions.values()[1];
+						if (columns == ShipPositions.NOTHING.getIntValue()) {
+							newBoard[x][y] = ShipPositions.SHIP.getIntValue();
 							remainingNumberOfShips--;
 							break;
 						}
