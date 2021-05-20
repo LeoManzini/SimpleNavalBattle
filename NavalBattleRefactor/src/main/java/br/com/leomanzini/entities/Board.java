@@ -1,10 +1,13 @@
 package br.com.leomanzini.entities;
 
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import br.com.leomanzini.utils.ShipPositions;
 
 public class Board {
 	
@@ -12,8 +15,8 @@ public class Board {
 	private int boardSize;
 	private int coordinateX;
 	private int coordinateY;
-	private int playerOneBoard[][];
-	private int playerTwoBoard[][];
+	private Integer playerOneBoard[][];
+	private Integer playerTwoBoard[][];
 	private Scanner sc = new Scanner(System.in);
 	
 	public Board(int coordinateX, int coordinateY) {
@@ -49,7 +52,39 @@ public class Board {
 		this.playerTwoBoard = createVoidBoard();
 	}
 	
-	public int[][] createVoidBoard () {
-		return new int [this.coordinateX][this.coordinateY];
+	public Integer[][] createVoidBoard () {
+		return new Integer [this.coordinateX][this.coordinateY];
+	}
+	
+	public int[][] insertShipsAtNewBoard (int numberOfShips) {
+		Integer[][] newBoard = createVoidBoard();
+		int remainingNumberOfShips = numberOfShips;
+		Random randNumber = new Random();
+		int x = 0, y = 0;
+		do {
+			x = 0;
+			y = 0;
+			for (Integer[] lines : newBoard) {
+				for (Integer columns : lines) {
+					if (randNumber.nextInt(100) <= 10) {
+						if (columns.equals(ShipPositions.NOTHING)) {
+							newBoard[x][y] = ShipPositions.values()[1];
+							remainingNumberOfShips--;
+							break;
+						}
+						if (remainingNumberOfShips <= 0) {
+							break;
+						}
+					}
+					y++;
+				}
+				y = 0;
+				x++;
+				if (remainingNumberOfShips <= 0) {
+					break;
+				}
+			}
+		} while(remainingNumberOfShips > 0);
+		return newBoard;
 	}
 }
