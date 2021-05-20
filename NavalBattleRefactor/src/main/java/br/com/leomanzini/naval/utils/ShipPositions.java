@@ -1,4 +1,4 @@
-package br.com.leomanzini.utils;
+package br.com.leomanzini.naval.utils;
 
 public enum ShipPositions {
 

@@ -1,4 +1,4 @@
-package br.com.leomanzini.entities;
+package br.com.leomanzini.naval.entities;
 
 import java.util.InputMismatchException;
 import java.util.Random;
@@ -7,7 +7,7 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import br.com.leomanzini.utils.ShipPositions;
+import br.com.leomanzini.naval.utils.ShipPositions;
 
 public class Board {
 	

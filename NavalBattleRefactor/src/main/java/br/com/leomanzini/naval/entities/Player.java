@@ -1,4 +1,4 @@
-package br.com.leomanzini.entities;
+package br.com.leomanzini.naval.entities;
 
 public class Player {
 	
