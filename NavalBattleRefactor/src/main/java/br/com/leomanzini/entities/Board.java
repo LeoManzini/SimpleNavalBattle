@@ -88,4 +88,18 @@ public class Board {
 		} while(remainingNumberOfShips > 0);
 		return newBoard;
 	}
+	
+	public void insertShipsAtPlayersBoard (int numberOfShips) {
+		this.playerOneBoard = insertShipsAtNewBoard(numberOfShips);
+		this.playerTwoBoard = insertShipsAtNewBoard(numberOfShips);
+	}
+	
+	public void printNumbering () {
+		int columnNumber = 1;
+		String boardNumber = "   ";
+		for(int i = 0; i < this.coordinateY; i++) {
+			boardNumber += (columnNumber++) + " ";
+		}
+		System.out.println(boardNumber);
+	}
 }
