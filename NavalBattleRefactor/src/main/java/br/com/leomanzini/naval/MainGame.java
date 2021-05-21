@@ -43,6 +43,11 @@ public class MainGame {
 		ships.setNumberOfChips(numberOfShips);
 	}
 	
+	private static void fillPlayerBoard(Player player, Board board, Ships ships) {
+		player.setPlayerBoard(board.insertShipsAtPlayerBoard(ships.getNumberOfChips()));
+		player.setPlayerShips(ships.getNumberOfChips());
+	}
+	
 	public static void main(String args[]) {
 		
 		Board board = instanciateGameMode();
@@ -54,6 +59,9 @@ public class MainGame {
 		player2.setPlayerBoard(board.createVoidBoard());
 		
 		initiateNumberOfShips(ships);
+		
+		fillPlayerBoard(player1, board, ships);
+		fillPlayerBoard(player2, board, ships);
 		
 		sc.close();
 	}
