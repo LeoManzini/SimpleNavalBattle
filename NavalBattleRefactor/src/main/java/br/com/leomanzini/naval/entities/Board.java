@@ -11,6 +11,7 @@ public class Board {
 	private static final Logger LOG = LogManager.getLogger(Board.class);
 	private int coordinateX;
 	private int coordinateY;
+	private int gameBoard;
 	private Scanner sc = new Scanner(System.in);
 
 	public Board() {
@@ -18,7 +19,6 @@ public class Board {
 
 	public Board(int option) {
 		validateOption(option);
-		close();
 	}
 	
 	public void validateOption(int option) {
@@ -26,20 +26,24 @@ public class Board {
 			loop : while (true) {
 				switch(option) {
 					case 1:
-						setCoordinateX(8);
-						setCoordinateY(8);
+						this.gameBoard = 1;
+						this.coordinateX = 8;
+						this.coordinateY = 8;
 						break loop;
 					case 2:
-						setCoordinateX(13);
-						setCoordinateY(13);
+						this.gameBoard = 2;
+						this.coordinateX = 13;
+						this.coordinateY = 13;
 						break loop;
 					case 3:
-						setCoordinateX(20);
-						setCoordinateY(20);
+						this.gameBoard = 3;
+						this.coordinateX = 20;
+						this.coordinateY = 20;
 						break loop;
 					case 4:
-						setCoordinateX(26);
-						setCoordinateY(26);
+						this.gameBoard = 4;
+						this.coordinateX = 26;
+						this.coordinateY = 26;
 						break loop;
 					default:
 						LOG.info("Choose a valid game option: ");
@@ -58,6 +62,10 @@ public class Board {
 	
 	public void close() {
 		sc.close();
+	}
+	
+	public int getGameBoard() {
+		return gameBoard;
 	}
 
 	public int getCoordinateX() {

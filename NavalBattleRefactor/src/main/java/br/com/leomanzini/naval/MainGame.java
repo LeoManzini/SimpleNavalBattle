@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import br.com.leomanzini.naval.entities.Board;
 import br.com.leomanzini.naval.entities.Player;
+import br.com.leomanzini.naval.entities.Ships;
 
 public class MainGame {
 	
@@ -35,14 +36,24 @@ public class MainGame {
 		return new Player();
 	}
 	
+	private static void initiateNumberOfShips (Ships ships) {
+		LOG.info("The max number of ships are: " + ships.getMaxNumberOfShips());
+		LOG.info("Enter with the ships you want to insert: ");
+		int numberOfShips = sc.nextInt();
+		ships.setNumberOfChips(numberOfShips);
+	}
+	
 	public static void main(String args[]) {
 		
 		Board board = instanciateGameMode();
 		Player player1 = instantiateHumanPlayer();
 		Player player2 = instantiateComputerPlayer();
+		Ships ships = new Ships(board.getGameBoard());
 		
 		player1.setPlayerBoard(board.createVoidBoard());
 		player2.setPlayerBoard(board.createVoidBoard());
+		
+		initiateNumberOfShips(ships);
 		
 		sc.close();
 	}
