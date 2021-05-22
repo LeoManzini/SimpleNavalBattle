@@ -107,7 +107,7 @@ public class Board {
 		System.out.println(boardNumber);
 	}
 
-	public void print(Player player) {
+	public void printBoard(Player player) {
 		System.out.println("|----- " + player.getName() + " -----|");
 		printNumbering();
 		String boardLine = "";

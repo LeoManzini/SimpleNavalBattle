@@ -48,8 +48,8 @@ public class MainGame {
 		player.setPlayerShips(ships.getNumberOfChips());
 	}
 	
-	private static void printBoards(Board board, Player player) {
-		board.print(player);
+	private static void printPlayerBoard(Board board, Player player) {
+		board.printBoard(player);
 	}
 	
 	public static void main(String args[]) {
@@ -67,8 +67,8 @@ public class MainGame {
 		fillPlayerBoard(player1, board, ships);
 		fillPlayerBoard(player2, board, ships);
 		
-		printBoards(board, player1);
-		printBoards(board, player2);
+		printPlayerBoard(board, player1);
+		printPlayerBoard(board, player2);
 		
 		sc.close();
 	}
