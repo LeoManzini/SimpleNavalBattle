@@ -7,8 +7,6 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import br.com.leomanzini.naval.utils.ShipPositions;
-
 public class Board {
 
 	private static final Logger LOG = LogManager.getLogger(Board.class);
@@ -73,8 +71,8 @@ public class Board {
 			for (int[] lines : fillBoard) {
 				for (int columns : lines) {
 					if (randNumber.nextInt(100) <= 10) {
-						if (columns == ShipPositions.NOTHING.getIntValue()) {
-							fillBoard[x][y] = ShipPositions.SHIP.getIntValue();
+						if (columns == 0) {
+							fillBoard[x][y] = 1;
 							remainingNumberOfShips--;
 							break;
 						}
@@ -108,7 +106,7 @@ public class Board {
 	}
 
 	public void printBoard(Player player) {
-		System.out.println("|----- " + player.getName() + " -----|");
+		System.out.println("|---------- " + player.getName() + " ----------|");
 		printNumbering();
 		String boardLine = "";
 		char lineLetter = 65;
