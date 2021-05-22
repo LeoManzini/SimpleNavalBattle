@@ -28,7 +28,7 @@ public class Ships {
 		try {
 			while(true) {
 				if(numberOfShips <= 0 || numberOfShips > this.maxNumberOfShips) {
-					LOG.info("Enter with a valid number of ships.");
+					System.out.println("Enter with a valid number of ships: ");
 					numberOfShips = sc.nextInt();
 				} else {
 					this.numberOfShips = numberOfShips;

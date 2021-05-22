@@ -93,7 +93,7 @@ public abstract class GameExecutor {
 
 		} else {
 			validate = false;
-			System.out.println("Invalid Coordinate.");
+			System.out.println("Invalid Coordinate.\n");
 		}
 		return validate;
 	}
@@ -115,6 +115,7 @@ public abstract class GameExecutor {
 		int[] playerPosition = new int[2];
 		playerPosition[player.getXPOSITION()] = shot.charAt(0) - 97;
 		playerPosition[player.getYPOSITION()] = Integer.parseInt(shot.substring(1)) - 1;
+
 		return playerPosition;
 	}
 
@@ -123,10 +124,12 @@ public abstract class GameExecutor {
 		if (player.getPlayerPosition()[player.getXPOSITION()] > player.getCoordinateX() - 1) {
 			feedback = false;
 			System.out.println("Letter position can't be higher than: " + (char) (player.getCoordinateX() + 64));
+			System.out.println();
 		}
 		if (player.getPlayerPosition()[player.getYPOSITION()] > player.getCoordinateY()) {
 			feedback = false;
 			System.out.println("Number position can't be higher than: " + player.getCoordinateY());
+			System.out.println();
 		}
 		return feedback;
 	}
@@ -164,7 +167,7 @@ public abstract class GameExecutor {
 			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
 					               [player.getPlayerPosition()[player.getYPOSITION()]] = ShipPositions.HIT.getIntValue();
 			player.setPlayerShips(player.getPlayerShips() - 1);
-			System.out.println("\nYou hit a ship!");
+			System.out.println("\nYou hit a ship!\n");
 		} else {
 			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
 					               [player.getPlayerPosition()[player.getYPOSITION()]] = ShipPositions.MISSED.getIntValue();
@@ -178,7 +181,7 @@ public abstract class GameExecutor {
 			return false;
 		}
 		if (player1.getPlayerShips() <= 0) {
-			System.out.println(computerPlayer.getName() + " is the winner!");
+			System.out.println(computerPlayer.getName() + " is the winner!\n");
 			return false;
 		}
 		return true;
