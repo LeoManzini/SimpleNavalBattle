@@ -9,6 +9,7 @@ public class Player {
 	private int playerShips;
 	private boolean human;
 	private String playerShot;
+	private int computerShots[];
 	private int playerPosition[];
 	private final int XPOSITION = 0;
 	private final int YPOSITION = 1;
@@ -77,6 +78,14 @@ public class Player {
 
 	public void setPlayerShot(String playerShot) {
 		this.playerShot = playerShot;
+	}
+
+	public int[] getComputerShots() {
+		return computerShots;
+	}
+
+	public void setComputerShots(int[] computerShots) {
+		this.computerShots = computerShots;
 	}
 
 	public int[] getPlayerPosition() {
