@@ -128,10 +128,10 @@ public class Board {
 						break;
 					}
 				case 2:
-					boardLine += "X|";
+					boardLine += "X | ";
 					break;
 				case 3:
-					boardLine += "D|";
+					boardLine += "D | ";
 					break;
 				}
 			}
