@@ -62,7 +62,7 @@ public abstract class GameExecutor {
 		if (validatePlayerShot(player)) {
 			computerPlayer.setPlayerPosition(catchPlayerPositions(player));
 			if(validatePlayerPosition(computerPlayer)) {
-				insertActionsToBoard(player, computerPlayer);
+				insertActionsToBoard(computerPlayer);
 			} else {
 				validate = false;
 			}
@@ -109,7 +109,7 @@ public abstract class GameExecutor {
 	
 	public static void computerPlayerAction(Player player1, Player computerPlayer) {
 		catchComputerShot(player1);
-		insertActionsToBoard(computerPlayer, player1);
+		insertActionsToBoard(player1);
 	}
 	
 	public static void catchComputerShot(Player player) {
@@ -125,39 +125,18 @@ public abstract class GameExecutor {
 		return (numberGenerated == limit) ? --numberGenerated : numberGenerated;
 	}
 	
-	public static Player insertActionsToBoard (Player player1, Player player2) {
-		if(player1.getHuman()) {
-			Player player = player2;
-			if (player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
-									   [player.getPlayerPosition()[player.getYPOSITION()]] == 1) 
-			{
-				player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
-									   [player.getPlayerPosition()[player.getYPOSITION()]] = 3;
-				player.setPlayerShips(player.getPlayerShips() - 1);
-				LOG.info("You hit a ship!");
-				return player;
-			} else {
-				player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
-									   [player.getPlayerPosition()[player.getYPOSITION()]] = 2;
-				LOG.info("You missed the shot...");
-				return player;
-			}
+	public static void insertActionsToBoard (Player player) {
+		if (player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
+								   [player.getPlayerPosition()[player.getYPOSITION()]] == 1) 
+		{
+			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
+								   [player.getPlayerPosition()[player.getYPOSITION()]] = 3;
+			player.setPlayerShips(player.getPlayerShips() - 1);
+			LOG.info("You hit a ship!");
 		} else {
-			Player player = player1;
-			if (player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
-									   [player.getPlayerPosition()[player.getYPOSITION()]] == 1) 
-			{
-				player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
-									   [player.getPlayerPosition()[player.getYPOSITION()]] = 3;
-				player.setPlayerShips(player.getPlayerShips() - 1);
-				LOG.info("Computer hit a ship!");
-				return player;
-			} else {
-				player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
-									   [player.getPlayerPosition()[player.getYPOSITION()]] = 2;
-				LOG.info("Computer missed the shot...");
-				return player;
-			}
+			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
+								   [player.getPlayerPosition()[player.getYPOSITION()]] = 2;
+			LOG.info("You missed the shot...");
 		}
 	}
 	

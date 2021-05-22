@@ -28,8 +28,8 @@ public class Board {
 				switch (option) {
 				case 1:
 					this.gameBoard = 1;
-					this.coordinateX = 8;
-					this.coordinateY = 8;
+					this.coordinateX = 5;
+					this.coordinateY = 5;
 					break loop;
 				case 2:
 					this.gameBoard = 2;
