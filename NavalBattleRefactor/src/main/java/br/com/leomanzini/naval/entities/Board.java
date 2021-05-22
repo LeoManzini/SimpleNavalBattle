@@ -94,6 +94,52 @@ public class Board {
 		return fillBoard;
 	}
 
+	public void printNumbering() {
+		int columnNumber = 1;
+		String boardNumber = "    ";
+		for (int i = 0; i < coordinateY; i++) {
+			if (columnNumber < 10) {
+				boardNumber += (columnNumber++) + "   ";
+			} else {
+				boardNumber += (columnNumber++) + "  ";
+			}
+		}
+		System.out.println(boardNumber);
+	}
+
+	public void print(Player player) {
+		System.out.println("|----- " + player.getName() + " -----|");
+		printNumbering();
+		String boardLine = "";
+		char lineLetter = 65;
+		for (int line[] : player.getPlayerBoard()) {
+			boardLine = (lineLetter++) + " | ";
+			for (int column : line) {
+				switch (column) { 
+				case 0:
+					boardLine += "  | ";
+					break;
+				case 1:
+					if (player.getHuman()) {
+						boardLine += "S | ";
+						break;
+					} else {
+						boardLine += "  | ";
+						break;
+					}
+				case 2:
+					boardLine += "X|";
+					break;
+				case 3:
+					boardLine += "D|";
+					break;
+				}
+			}
+			System.out.println(boardLine);
+		}
+		System.out.println();
+	}
+
 	public void close() {
 		sc.close();
 	}
