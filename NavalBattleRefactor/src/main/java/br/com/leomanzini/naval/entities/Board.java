@@ -20,37 +20,41 @@ public class Board {
 	public Board() {
 	}
 
-	public Board(int option) {
-		validateOption(option);
+	public Board(int coordinateX, int coordinateY) {
+		validateCoordinateX(coordinateX);
+		validateCoordinateY(coordinateY);
 	}
 
-	public void validateOption(int option) {
+	public void validateCoordinateX(int coordinateX) {
 		try {
-			loop: while (true) {
-				switch (option) {
-				case 1:
-					this.gameBoard = 1;
-					this.coordinateX = 5;
-					this.coordinateY = 5;
-					break loop;
-				case 2:
-					this.gameBoard = 2;
-					this.coordinateX = 13;
-					this.coordinateY = 13;
-					break loop;
-				case 3:
-					this.gameBoard = 3;
-					this.coordinateX = 20;
-					this.coordinateY = 20;
-					break loop;
-				case 4:
-					this.gameBoard = 4;
-					this.coordinateX = 26;
-					this.coordinateY = 26;
-					break loop;
-				default:
-					LOG.info("Choose a valid game option: ");
-					option = sc.nextInt();
+			while (true) {
+				if (coordinateX > 26 || 0 > coordinateX) {
+					while (coordinateX > 26 || 0 > coordinateX) {
+						System.out.println("\nMax number of lines is 26, enter with a valid input!");
+						coordinateX = sc.nextInt();
+					}
+				} else {
+					this.coordinateX = coordinateX;
+					break;
+				}
+			}
+		} catch (InputMismatchException e) {
+			LOG.error("Enter with a integer number.", e);
+			System.exit(-1);
+		}
+	}
+	
+	public void validateCoordinateY(int coordinateY) {
+		try {
+			while (true) {
+				if (coordinateY > this.coordinateX || 0 > coordinateY) {
+					while (coordinateY > this.coordinateX || 0 > coordinateX) {
+						System.out.println("\nMax number of columns is the same as the lines, enter with a valid input!");
+						coordinateY = sc.nextInt();
+					}
+				} else {
+					this.coordinateY = coordinateY;
+					break;
 				}
 			}
 		} catch (InputMismatchException e) {
@@ -108,7 +112,7 @@ public class Board {
 	}
 
 	public void printBoard(Player player) {
-		System.out.println("|---------- " + player.getName() + " ----------|");
+		System.out.println("|---------- Printing " + player.getName() + "'s board ----------|");
 		printNumbering();
 		String boardLine = "";
 		char lineLetter = 65;

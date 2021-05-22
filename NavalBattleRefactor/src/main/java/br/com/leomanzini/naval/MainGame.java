@@ -15,10 +15,13 @@ public class MainGame {
 	public static void main(String args[]) {
 		
 		try {
+			GameExecutor.printStartMenu();
+			GameExecutor.printGameRules();
+			
 			Board board = GameExecutor.instanciateGameMode();
 			Player player1 = GameExecutor.instantiateHumanPlayer();
 			Player computerPlayer = GameExecutor.instantiateComputerPlayer();
-			Ships ships = new Ships(board.getGameBoard());
+			Ships ships = new Ships(board.getCoordinateX(), board.getCoordinateY());
 			
 			player1.setPlayerBoard(board.createVoidBoard());
 			computerPlayer.setPlayerBoard(board.createVoidBoard());

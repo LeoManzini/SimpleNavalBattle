@@ -1,35 +1,57 @@
 package br.com.leomanzini.naval.executor;
 
-import br.com.leomanzini.naval.MainGame;
+import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
+
 import br.com.leomanzini.naval.entities.Board;
 import br.com.leomanzini.naval.entities.Player;
 import br.com.leomanzini.naval.entities.Ships;
 import br.com.leomanzini.naval.utils.ShipPositions;
 
-import java.util.Random;
-import java.util.Scanner;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public abstract class GameExecutor {
 
-	private static final Logger LOG = LogManager.getLogger(MainGame.class);
 	private static final Scanner sc = new Scanner(System.in);
+	
+	public static void printStartMenu() {
+		System.out.println("##################################################");
+		System.out.println("#                    Welcome to                  #");
+		System.out.println("#                  Naval Battle!!                #");
+		System.out.println("#                                                #");
+		System.out.println("#          Author: Leonardo H. Manzini           #");
+		System.out.println("##################################################");
+		System.out.println("Do you want to play a match? (Yes/No)");
+		String option = sc.next();
+		char letter = option.toUpperCase().charAt(0);
+		switch(letter) {
+			case 'Y':
+				System.out.println("\nEnjoy the game!\n");
+				break;
+			default:
+				System.out.println("\nWe hope to play with you later!\n");
+				System.exit(0);
+		}
+	}
+	
+	public static void printGameRules() {
+		System.out.println("Understanding the game board: ");
+		System.out.println("S is a Ship;");
+		System.out.println("X is a missed shot;");
+		System.out.println("D is a destroyed ship.\n");
+	}
 
-	public static Board instanciateGameMode() {
-		LOG.info("Choose a game board size: ");
-		LOG.info("1 - Small game board;");
-		LOG.info("2 - Medium game board;");
-		LOG.info("3 - Big game board;");
-		LOG.info("4 - Bigger game board;");
-		int option = sc.nextInt();
+	public static Board instanciateGameMode() throws InterruptedException, IOException {
+		System.out.println("Choose a game board size");
+		System.out.println("Enter with the number of lines to the board: ");
+		int coordinateX = sc.nextInt();
+		System.out.println("Enter with the number of columns to the board: ");
+		int coordinateY = sc.nextInt();
 
-		return new Board(option);
+		return new Board(coordinateX, coordinateY);
 	}
 
 	public static Player instantiateHumanPlayer() {
-		LOG.info("Enter with the player one name: ");
+		System.out.println("Enter with the player name: ");
 		String name = sc.next();
 
 		return new Player(name);
@@ -40,10 +62,11 @@ public abstract class GameExecutor {
 	}
 
 	public static void initiateNumberOfShips(Ships ships) {
-		LOG.info("The max number of ships are: " + ships.getMaxNumberOfShips());
-		LOG.info("Enter with the ships you want to insert: ");
+		System.out.println("\nThe max number of ships you can insert at the board is: " + ships.getMaxNumberOfShips());
+		System.out.println("Enter with the number of ships you want to insert: ");
 		int numberOfShips = sc.nextInt();
 		ships.setNumberOfChips(numberOfShips);
+		System.out.println();
 	}
 
 	public static void fillPlayerBoard(Player player, Board board, Ships ships) {
@@ -70,13 +93,13 @@ public abstract class GameExecutor {
 
 		} else {
 			validate = false;
-			LOG.info("Invalid Coordinate.");
+			System.out.println("Invalid Coordinate.");
 		}
 		return validate;
 	}
 
 	public static void catchPlayerShot(Player player) {
-		LOG.info("Enter with your shot position: ");
+		System.out.println("Enter with your shot position: ");
 		String playerShot = sc.next();
 		player.setPlayerShot(playerShot);
 	}
@@ -99,11 +122,11 @@ public abstract class GameExecutor {
 		boolean feedback = true;
 		if (player.getPlayerPosition()[player.getXPOSITION()] > player.getCoordinateX() - 1) {
 			feedback = false;
-			LOG.info("Letter position can't be higher than: " + (char) (player.getCoordinateX() + 64));
+			System.out.println("Letter position can't be higher than: " + (char) (player.getCoordinateX() + 64));
 		}
 		if (player.getPlayerPosition()[player.getYPOSITION()] > player.getCoordinateY()) {
 			feedback = false;
-			LOG.info("Number position can't be higher than: " + player.getCoordinateY());
+			System.out.println("Number position can't be higher than: " + player.getCoordinateY());
 		}
 		return feedback;
 	}
@@ -141,21 +164,21 @@ public abstract class GameExecutor {
 			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
 					               [player.getPlayerPosition()[player.getYPOSITION()]] = ShipPositions.HIT.getIntValue();
 			player.setPlayerShips(player.getPlayerShips() - 1);
-			LOG.info("You hit a ship!");
+			System.out.println("\nYou hit a ship!");
 		} else {
 			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
 					               [player.getPlayerPosition()[player.getYPOSITION()]] = ShipPositions.MISSED.getIntValue();
-			LOG.info("You missed the shot...");
+			System.out.println("\nYou missed the shot...\n");
 		}
 	}
 
 	public static boolean winCondition(boolean loop, Player player1, Player computerPlayer) {
 		if (computerPlayer.getPlayerShips() <= 0) {
-			LOG.info(player1.getName() + " win!");
+			System.out.println(player1.getName() + " is the winner!\n");
 			return false;
 		}
 		if (player1.getPlayerShips() <= 0) {
-			System.out.println(computerPlayer.getName() + " win!");
+			System.out.println(computerPlayer.getName() + " is the winner!");
 			return false;
 		}
 		return true;
