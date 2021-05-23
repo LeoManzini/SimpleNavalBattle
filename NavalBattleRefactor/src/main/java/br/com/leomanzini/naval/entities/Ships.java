@@ -16,37 +16,19 @@ public class Ships {
 	public Ships() {
 	}
 	
-	public Ships(int gameBoard) {
-		calculateMaxNumberOfShips(gameBoard);
+	public Ships(int coordinateX, int coordinateY) {
+		calculateMaxNumberOfShips(coordinateX, coordinateY);
 	}
 	
-	public void calculateMaxNumberOfShips(int gameBoard) {
-		try {
-			switch(gameBoard) {
-			case 1:
-				this.maxNumberOfShips = (8 * 8) / 3;
-				break;
-			case 2:
-				this.maxNumberOfShips = (13 * 13) / 3;
-				break;
-			case 3:
-				this.maxNumberOfShips = (20 * 20) / 3;
-				break;
-			case 4:
-				this.maxNumberOfShips = (26 * 26) / 3;
-				break;
-			}
-		} catch(Exception e) {
-			LOG.error("Invalid board size.", e);
-			System.exit(-1);
-		}
+	public void calculateMaxNumberOfShips(int coordinateX, int coordinateY) {
+		this.maxNumberOfShips = (coordinateX * coordinateY) / 3;
 	}
 	
 	private void validateNumberOfChips(int numberOfShips) {
 		try {
 			while(true) {
 				if(numberOfShips <= 0 || numberOfShips > this.maxNumberOfShips) {
-					LOG.info("Enter with a valid number of ships.");
+					System.out.println("Enter with a valid number of ships: ");
 					numberOfShips = sc.nextInt();
 				} else {
 					this.numberOfShips = numberOfShips;
@@ -54,7 +36,7 @@ public class Ships {
 				}
 			}
 		} catch(InputMismatchException e) {
-			LOG.error("Enter with a integer number.", e);
+			LOG.error("Enter with a integer number.");
 			System.exit(-1);
 		}
 	}
