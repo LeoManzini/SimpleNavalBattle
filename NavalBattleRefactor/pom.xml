@@ -45,7 +45,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>br.com.leomanzini.navalbattle.Main</mainClass>
+							<mainClass>br.com.leomanzini.naval.MainGame</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

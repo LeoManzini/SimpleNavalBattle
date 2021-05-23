@@ -1,0 +1,7 @@
+br\com\leomanzini\naval\entities\Game.class
+br\com\leomanzini\naval\entities\Player.class
+br\com\leomanzini\naval\entities\Ships.class
+br\com\leomanzini\naval\entities\Board.class
+br\com\leomanzini\naval\executor\GameExecutor.class
+br\com\leomanzini\naval\utils\ShipPositions.class
+br\com\leomanzini\naval\MainGame.class
