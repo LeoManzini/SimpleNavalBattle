@@ -76,54 +76,50 @@ public abstract class GameExecutor {
 		System.out.println("D is a destroyed ship.\n");
 	}
 
-	public static Board instanciateGameMode() {
-		System.out.println("Choose a game board size");
-		System.out.println("Enter with the number of lines to the board: ");
-		int coordinateX = sc.nextInt();
-		coordinateX = validateCoordinateX(coordinateX);
-		System.out.println("Enter with the number of columns to the board: ");
-		int coordinateY = sc.nextInt();
-		coordinateY = validateCoordinateY(coordinateY, coordinateX);
-
+	public static Board instanciateGameMode() throws InputMismatchException {
+		int coordinateX = 2, coordinateY = 2;
+		try {
+			System.out.println("Choose a game board size");
+			System.out.println("Enter with the number of lines to the board: ");
+			coordinateX = sc.nextInt();
+			coordinateX = validateCoordinateX(coordinateX);
+			System.out.println("Enter with the number of columns to the board: ");
+			coordinateY = sc.nextInt();
+			coordinateY = validateCoordinateY(coordinateY, coordinateX);
+			
+		} catch (Exception e) {
+			LOG.error("Enter with a integer number.");
+			System.exit(-1);
+		}
 		return new Board(coordinateX, coordinateY);
 	}
 	
 	public static int validateCoordinateX(int coordinateX) {
-		try {
-			while (true) {
-				if (coordinateX > 26 | 0 >= coordinateX | coordinateX == 1) {
-					while (coordinateX > 26 | 0 >= coordinateX | coordinateX == 1) {
-						System.out.println("Max number of lines is 26 and min is 2.");
-						System.out.println("Enter with a valid input: ");
-						coordinateX = sc.nextInt();
-					}
-				} else {
-					break;
+		while (true) {
+			if (coordinateX > 26 | 0 >= coordinateX | coordinateX == 1) {
+				while (coordinateX > 26 | 0 >= coordinateX | coordinateX == 1) {
+					System.out.println("Max number of lines is 26 and min is 2.");
+					System.out.println("Enter with a valid input: ");
+					coordinateX = sc.nextInt();
 				}
+			} else {
+				break;
 			}
-		} catch (InputMismatchException e) {
-			LOG.error("Enter with a integer number.", e);
-			System.exit(-1);
 		}
 		return coordinateX;
 	}
 	
 	public static int validateCoordinateY(int coordinateY, int coordinateX) {
-		try {
-			while (true) {
-				if (coordinateY > coordinateX | 0 >= coordinateY | coordinateY == 1) {
-					while (coordinateY > coordinateX | 0 >= coordinateY | coordinateY == 1) {
-						System.out.println("Max number of columns is the same as the lines and the min is 2.");
-						System.out.println("Enter with a valid input: ");
-						coordinateY = sc.nextInt();
-					}
-				} else {
-					break;
+		while (true) {
+			if (coordinateY > coordinateX | 0 >= coordinateY | coordinateY == 1) {
+				while (coordinateY > coordinateX | 0 >= coordinateY | coordinateY == 1) {
+					System.out.println("Max number of columns is the same as the lines and the min is 2.");
+					System.out.println("Enter with a valid input: ");
+					coordinateY = sc.nextInt();
 				}
+			} else {
+				break;
 			}
-		} catch (InputMismatchException e) {
-			LOG.error("Enter with a integer number.", e);
-			System.exit(-1);
 		}
 		return coordinateY;
 	}

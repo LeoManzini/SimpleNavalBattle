@@ -36,7 +36,7 @@ public class Ships {
 				}
 			}
 		} catch(InputMismatchException e) {
-			LOG.error("Enter with a integer number.", e);
+			LOG.error("Enter with a integer number.");
 			System.exit(-1);
 		}
 	}
