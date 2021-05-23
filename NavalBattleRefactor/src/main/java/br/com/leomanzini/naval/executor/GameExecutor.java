@@ -1,8 +1,11 @@
 package br.com.leomanzini.naval.executor;
 
-import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import br.com.leomanzini.naval.entities.Board;
 import br.com.leomanzini.naval.entities.Player;
@@ -11,7 +14,37 @@ import br.com.leomanzini.naval.utils.ShipPositions;
 
 public abstract class GameExecutor {
 
+	private static final Logger LOG = LogManager.getLogger(GameExecutor.class);
 	private static final Scanner sc = new Scanner(System.in);
+	
+	public static void startGame(Board board, Player player1, Player computerPlayer, Ships ships) {
+		try {
+			board = instanciateGameMode();
+			player1 = instantiateHumanPlayer();
+			computerPlayer = instantiateComputerPlayer();
+			ships = new Ships(board.getCoordinateX(), board.getCoordinateY());
+			
+			player1.setPlayerBoard(board.createVoidBoard());
+			computerPlayer.setPlayerBoard(board.createVoidBoard());
+			
+			initiateNumberOfShips(ships);
+			
+			fillPlayerBoard(player1, board, ships);
+			fillPlayerBoard(computerPlayer, board, ships);
+			
+			gameLoop(board, player1, computerPlayer);
+			
+			if(newGame()) {
+				printStartMenu();
+				startGame(board, player1, computerPlayer, ships);
+			} else {
+				closeAll();
+			}
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			System.exit(-1);
+		}
+	}
 
 	public static void printStartMenu() {
 		System.out.println("##################################################");
@@ -20,6 +53,9 @@ public abstract class GameExecutor {
 		System.out.println("#                                                #");
 		System.out.println("#          Author: Leonardo H. Manzini           #");
 		System.out.println("##################################################");
+	}
+	
+	public static void startOption() {
 		System.out.println("Do you want to play a match? (Yes/No)");
 		String option = sc.next();
 		char letter = option.toUpperCase().charAt(0);
@@ -40,16 +76,58 @@ public abstract class GameExecutor {
 		System.out.println("D is a destroyed ship.\n");
 	}
 
-	public static Board instanciateGameMode() throws InterruptedException, IOException {
+	public static Board instanciateGameMode() {
 		System.out.println("Choose a game board size");
 		System.out.println("Enter with the number of lines to the board: ");
 		int coordinateX = sc.nextInt();
+		coordinateX = validateCoordinateX(coordinateX);
 		System.out.println("Enter with the number of columns to the board: ");
 		int coordinateY = sc.nextInt();
+		coordinateY = validateCoordinateY(coordinateY, coordinateX);
 
 		return new Board(coordinateX, coordinateY);
 	}
-
+	
+	public static int validateCoordinateX(int coordinateX) {
+		try {
+			while (true) {
+				if (coordinateX > 26 | 0 >= coordinateX | coordinateX == 1) {
+					while (coordinateX > 26 | 0 >= coordinateX | coordinateX == 1) {
+						System.out.println("Max number of lines is 26 and min is 2.");
+						System.out.println("Enter with a valid input: ");
+						coordinateX = sc.nextInt();
+					}
+				} else {
+					break;
+				}
+			}
+		} catch (InputMismatchException e) {
+			LOG.error("Enter with a integer number.", e);
+			System.exit(-1);
+		}
+		return coordinateX;
+	}
+	
+	public static int validateCoordinateY(int coordinateY, int coordinateX) {
+		try {
+			while (true) {
+				if (coordinateY > coordinateX | 0 >= coordinateY | coordinateY == 1) {
+					while (coordinateY > coordinateX | 0 >= coordinateY | coordinateY == 1) {
+						System.out.println("Max number of columns is the same as the lines and the min is 2.");
+						System.out.println("Enter with a valid input: ");
+						coordinateY = sc.nextInt();
+					}
+				} else {
+					break;
+				}
+			}
+		} catch (InputMismatchException e) {
+			LOG.error("Enter with a integer number.", e);
+			System.exit(-1);
+		}
+		return coordinateY;
+	}
+	
 	public static Player instantiateHumanPlayer() {
 		System.out.println("Enter with the player name: ");
 		String name = sc.next();
@@ -102,52 +180,51 @@ public abstract class GameExecutor {
 		System.out.println("Enter with your shot position: ");
 		String playerShot = sc.next();
 		playerShot.toLowerCase();
-		playerShot= validateShot(playerShot, player, computerPlayer);
+		playerShot = validateShot(playerShot, computerPlayer);
 		player.setPlayerShot(playerShot);
 	}
 	
-	private static String validateShot(String playerShot, Player player, Player computerPlayer) {
-		
-		int result[] = validateHigherThen(playerShot, computerPlayer);
-		int x = result[0];
-		int y = result[1];
-		
-		while (true) {
-			if (computerPlayer.getPlayerBoard()[x][y] == ShipPositions.MISSED.getIntValue()
-					|| computerPlayer.getPlayerBoard()[x][y] == ShipPositions.HIT.getIntValue()) 
-			{
-				System.out.println("You already entered with this position, type a new: ");
-				playerShot = sc.next();
-				int newResult[] = validateHigherThen(playerShot, computerPlayer);
-				x = newResult[0];
-				y = newResult[1];
-			} else {
-				break;
-			}
-		}
-		// Precisa receber o retorno da função de baixo
-		return playerShot;
-	}
-	
-	public static int[] validateHigherThen(String playerShot, Player computerPlayer) {
-		int object[] = new int[2];
-		int x = playerShot.charAt(0) - 97;
-		int y = Integer.parseInt(playerShot.substring(1)) - 1;
-
+	private static String validateShot(String playerShot, Player computerPlayer) {
+		int x, y;
 		while(true) {
-			if (x >= computerPlayer.getCoordinateX() || y >= computerPlayer.getCoordinateY()) {
-				System.out.println("Invalid coordinate.");
-				System.out.println("Type a new position: ");
+			try { 
+				x = playerShot.charAt(0) - 97;
+				y = Integer.parseInt(playerShot.substring(1)) - 1;
+				
+				if (computerPlayer.getPlayerBoard()[x][y] == ShipPositions.MISSED.getIntValue()
+						|| computerPlayer.getPlayerBoard()[x][y] == ShipPositions.HIT.getIntValue()) 
+				{
+					System.out.println("You already entered with this position, type a new: ");
+					playerShot = sc.next();
+					x = playerShot.charAt(0) - 97;
+					y = Integer.parseInt(playerShot.substring(1)) - 1;
+					
+					if (x >= computerPlayer.getCoordinateX() || y >= computerPlayer.getCoordinateY()) {
+						System.out.println("Invalid coordinate.");
+						System.out.println("Type a new position: ");
+						playerShot = sc.next();
+						x = playerShot.charAt(0) - 97;
+						y = Integer.parseInt(playerShot.substring(1)) - 1;
+					} else {
+						validateShot(playerShot, computerPlayer);
+						break;
+					}
+				} else {
+					break;
+				}
+			} catch (Exception e) {
+				System.out.println("\nInvalid coordinate.");
+				System.out.println("The correct format is letter + number, like 'a1' or 'A1'");
+				System.out.println("Letter position can't be higher than: " + (char) (computerPlayer.getCoordinateX() + 64));
+				System.out.println("Number position can't be higher than: " + computerPlayer.getCoordinateY());
+				System.out.println("\nType a new position: ");
 				playerShot = sc.next();
 				x = playerShot.charAt(0) - 97;
 				y = Integer.parseInt(playerShot.substring(1)) - 1;
-			} else {
-				break;
+				continue;
 			}
 		}
-		object[0] = x;
-		object[1] = y;
-		return object;
+		return playerShot;
 	}
 
 	public static boolean validatePlayerShot(Player player) {
@@ -247,7 +324,23 @@ public abstract class GameExecutor {
 		} while (loop);
 		printPlayerBoard(board, player1);
 		printPlayerBoard(board, computerPlayer);
-		closeAll();
+	}
+	
+	public static boolean newGame() {
+		System.out.println("\nDo you want to play a new match? (Yes/No)");
+		String option = sc.next();
+		char letter = option.toUpperCase().charAt(0);
+		switch (letter) {
+		case 'Y':
+			System.out.println("\nEnjoy the new game!\n");
+			return true;
+		default:
+			System.out.println("\nThank you for play! We hope to see you again!");
+			System.out.println("Leonardo Henrique Manzini - Jr. Systems Developer.");
+			System.out.println("Find me at GitHub: https://github.com/LeoManzini");
+			System.out.println("Find me at Linkedin: https://www.linkedin.com/in/leonardo-manzini/");
+			return false;
+		}
 	}
 
 	private static void closeAll() {

@@ -15,23 +15,15 @@ public class MainGame {
 	public static void main(String args[]) {
 		
 		try {
+			Board board = null;
+			Player player1 = null;
+			Player computerPlayer = null;
+			Ships ships = null;
+			
 			GameExecutor.printStartMenu();
+			GameExecutor.startOption();
 			GameExecutor.printGameRules();
-			
-			Board board = GameExecutor.instanciateGameMode();
-			Player player1 = GameExecutor.instantiateHumanPlayer();
-			Player computerPlayer = GameExecutor.instantiateComputerPlayer();
-			Ships ships = new Ships(board.getCoordinateX(), board.getCoordinateY());
-			
-			player1.setPlayerBoard(board.createVoidBoard());
-			computerPlayer.setPlayerBoard(board.createVoidBoard());
-			
-			GameExecutor.initiateNumberOfShips(ships);
-			
-			GameExecutor.fillPlayerBoard(player1, board, ships);
-			GameExecutor.fillPlayerBoard(computerPlayer, board, ships);
-			
-			GameExecutor.gameLoop(board, player1, computerPlayer);
+			GameExecutor.startGame(board, player1, computerPlayer, ships);
 			
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);

@@ -1,17 +1,12 @@
 package br.com.leomanzini.naval.entities;
 
-import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import br.com.leomanzini.naval.utils.ShipPositions;
 
 public class Board {
 
-	private static final Logger LOG = LogManager.getLogger(Board.class);
 	private int coordinateX;
 	private int coordinateY;
 	private int gameBoard;
@@ -21,46 +16,8 @@ public class Board {
 	}
 
 	public Board(int coordinateX, int coordinateY) {
-		validateCoordinateX(coordinateX);
-		validateCoordinateY(coordinateY);
-	}
-
-	public void validateCoordinateX(int coordinateX) {
-		try {
-			while (true) {
-				if (coordinateX > 26 || 0 > coordinateX) {
-					while (coordinateX > 26 || 0 > coordinateX) {
-						System.out.println("\nMax number of lines is 26, enter with a valid input!");
-						coordinateX = sc.nextInt();
-					}
-				} else {
-					this.coordinateX = coordinateX;
-					break;
-				}
-			}
-		} catch (InputMismatchException e) {
-			LOG.error("Enter with a integer number.", e);
-			System.exit(-1);
-		}
-	}
-	
-	public void validateCoordinateY(int coordinateY) {
-		try {
-			while (true) {
-				if (coordinateY > this.coordinateX || 0 > coordinateY) {
-					while (coordinateY > this.coordinateX || 0 > coordinateX) {
-						System.out.println("\nMax number of columns is the same as the lines, enter with a valid input!");
-						coordinateY = sc.nextInt();
-					}
-				} else {
-					this.coordinateY = coordinateY;
-					break;
-				}
-			}
-		} catch (InputMismatchException e) {
-			LOG.error("Enter with a integer number.", e);
-			System.exit(-1);
-		}
+		this.coordinateX = coordinateX;
+		this.coordinateY = coordinateY;
 	}
 
 	public int[][] createVoidBoard() {
