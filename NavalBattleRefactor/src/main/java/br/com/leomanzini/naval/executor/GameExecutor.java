@@ -12,7 +12,7 @@ import br.com.leomanzini.naval.utils.ShipPositions;
 public abstract class GameExecutor {
 
 	private static final Scanner sc = new Scanner(System.in);
-	
+
 	public static void printStartMenu() {
 		System.out.println("##################################################");
 		System.out.println("#                    Welcome to                  #");
@@ -23,16 +23,16 @@ public abstract class GameExecutor {
 		System.out.println("Do you want to play a match? (Yes/No)");
 		String option = sc.next();
 		char letter = option.toUpperCase().charAt(0);
-		switch(letter) {
-			case 'Y':
-				System.out.println("\nEnjoy the game!\n");
-				break;
-			default:
-				System.out.println("\nWe hope to play with you later!\n");
-				System.exit(0);
+		switch (letter) {
+		case 'Y':
+			System.out.println("\nEnjoy the game!\n");
+			break;
+		default:
+			System.out.println("\nWe hope to play with you later!\n");
+			System.exit(0);
 		}
 	}
-	
+
 	public static void printGameRules() {
 		System.out.println("Understanding the game board: ");
 		System.out.println("S is a Ship;");
@@ -82,7 +82,7 @@ public abstract class GameExecutor {
 
 	public static boolean humanPlayerAction(Player player, Player computerPlayer) {
 		boolean validate = true;
-		catchPlayerShot(player);
+		catchPlayerShot(player, computerPlayer);
 		if (validatePlayerShot(player)) {
 			computerPlayer.setPlayerPosition(catchPlayerPositions(player));
 			if (validatePlayerPosition(computerPlayer)) {
@@ -98,10 +98,56 @@ public abstract class GameExecutor {
 		return validate;
 	}
 
-	public static void catchPlayerShot(Player player) {
+	public static void catchPlayerShot(Player player, Player computerPlayer) {
 		System.out.println("Enter with your shot position: ");
 		String playerShot = sc.next();
+		playerShot.toLowerCase();
+		playerShot= validateShot(playerShot, player, computerPlayer);
 		player.setPlayerShot(playerShot);
+	}
+	
+	private static String validateShot(String playerShot, Player player, Player computerPlayer) {
+		
+		int result[] = validateHigherThen(playerShot, computerPlayer);
+		int x = result[0];
+		int y = result[1];
+		
+		while (true) {
+			if (computerPlayer.getPlayerBoard()[x][y] == ShipPositions.MISSED.getIntValue()
+					|| computerPlayer.getPlayerBoard()[x][y] == ShipPositions.HIT.getIntValue()) 
+			{
+				System.out.println("You already entered with this position, type a new: ");
+				playerShot = sc.next();
+				int newResult[] = validateHigherThen(playerShot, computerPlayer);
+				x = newResult[0];
+				y = newResult[1];
+			} else {
+				break;
+			}
+		}
+		// Precisa receber o retorno da função de baixo
+		return playerShot;
+	}
+	
+	public static int[] validateHigherThen(String playerShot, Player computerPlayer) {
+		int object[] = new int[2];
+		int x = playerShot.charAt(0) - 97;
+		int y = Integer.parseInt(playerShot.substring(1)) - 1;
+
+		while(true) {
+			if (x >= computerPlayer.getCoordinateX() || y >= computerPlayer.getCoordinateY()) {
+				System.out.println("Invalid coordinate.");
+				System.out.println("Type a new position: ");
+				playerShot = sc.next();
+				x = playerShot.charAt(0) - 97;
+				y = Integer.parseInt(playerShot.substring(1)) - 1;
+			} else {
+				break;
+			}
+		}
+		object[0] = x;
+		object[1] = y;
+		return object;
 	}
 
 	public static boolean validatePlayerShot(Player player) {
@@ -115,7 +161,6 @@ public abstract class GameExecutor {
 		int[] playerPosition = new int[2];
 		playerPosition[player.getXPOSITION()] = shot.charAt(0) - 97;
 		playerPosition[player.getYPOSITION()] = Integer.parseInt(shot.substring(1)) - 1;
-
 		return playerPosition;
 	}
 
@@ -144,8 +189,10 @@ public abstract class GameExecutor {
 		playerPosition[player.getXPOSITION()] = getRandomShot(player.getCoordinateX());
 		playerPosition[player.getYPOSITION()] = getRandomShot(player.getCoordinateY());
 		while (true) {
-			if (player.getPlayerBoard()[playerPosition[player.getXPOSITION()]][player.getYPOSITION()] == ShipPositions.MISSED.getIntValue()
-					|| player.getPlayerBoard()[playerPosition[player.getXPOSITION()]][player.getYPOSITION()] == ShipPositions.HIT.getIntValue()) {
+			if (player.getPlayerBoard()[playerPosition[player.getXPOSITION()]][player
+					.getYPOSITION()] == ShipPositions.MISSED.getIntValue()
+					|| player.getPlayerBoard()[playerPosition[player.getXPOSITION()]][player
+							.getYPOSITION()] == ShipPositions.HIT.getIntValue()) {
 				playerPosition[player.getXPOSITION()] = getRandomShot(player.getCoordinateX());
 				playerPosition[player.getYPOSITION()] = getRandomShot(player.getCoordinateY());
 			} else {
@@ -162,15 +209,15 @@ public abstract class GameExecutor {
 	}
 
 	public static void insertActionsToBoard(Player player) {
-		if (player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
-								   [player.getPlayerPosition()[player.getYPOSITION()]] == ShipPositions.SHIP.getIntValue()) {
-			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
-					               [player.getPlayerPosition()[player.getYPOSITION()]] = ShipPositions.HIT.getIntValue();
+		if (player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]][player.getPlayerPosition()[player
+				.getYPOSITION()]] == ShipPositions.SHIP.getIntValue()) {
+			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]][player.getPlayerPosition()[player
+					.getYPOSITION()]] = ShipPositions.HIT.getIntValue();
 			player.setPlayerShips(player.getPlayerShips() - 1);
 			System.out.println("\nYou hit a ship!\n");
 		} else {
-			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]]
-					               [player.getPlayerPosition()[player.getYPOSITION()]] = ShipPositions.MISSED.getIntValue();
+			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]][player.getPlayerPosition()[player
+					.getYPOSITION()]] = ShipPositions.MISSED.getIntValue();
 			System.out.println("\nYou missed the shot...\n");
 		}
 	}
