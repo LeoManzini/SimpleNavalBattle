@@ -43,7 +43,7 @@ Related to the utils package, this enum store the board conditions, being each v
 
 This class is related to the main class, It's responsible to call the executor, passing the right objects to the program runs fine and without broke.
 
-![project_structure](https://user-images.githubusercontent.com/39606289/119280895-d2112a80-bc09-11eb-9fe8-c9c1b738fa68.png)
+![project_structure](https://user-images.githubusercontent.com/39606289/185806780-f392ac71-e3f6-4ee1-844c-d4a1b9e70ce4.png)
 
 I used to Maven to manage the project dependencies.
 
@@ -62,5 +62,3 @@ The game version is currently in version: 2.0,
 Because a refactor at the original version was need, but both are functional, the executable file available were compiled with the newest game version.
 
 You can found the executable file at the folder "Executable" at this repository.
-
-I hope you enjoy my work!
