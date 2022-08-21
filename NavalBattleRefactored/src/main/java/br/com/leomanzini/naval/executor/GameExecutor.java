@@ -4,9 +4,6 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import br.com.leomanzini.naval.entities.Board;
 import br.com.leomanzini.naval.entities.Player;
 import br.com.leomanzini.naval.entities.Ships;
@@ -14,7 +11,6 @@ import br.com.leomanzini.naval.utils.ShipPositions;
 
 public abstract class GameExecutor {
 
-	private static final Logger LOG = LogManager.getLogger(GameExecutor.class);
 	private static final Scanner sc = new Scanner(System.in);
 	
 	public static void startGame(Board board, Player player1, Player computerPlayer, Ships ships) {
@@ -41,7 +37,7 @@ public abstract class GameExecutor {
 				closeAll();
 			}
 		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
+			System.out.println(e.getMessage());
 			System.exit(-1);
 		}
 	}
@@ -88,7 +84,7 @@ public abstract class GameExecutor {
 			coordinateY = validateCoordinateY(coordinateY, coordinateX);
 			
 		} catch (Exception e) {
-			LOG.error("Enter with a integer number.");
+			System.out.println("Enter with a integer number.");
 			System.exit(-1);
 		}
 		return new Board(coordinateX, coordinateY);

@@ -3,12 +3,8 @@ package br.com.leomanzini.naval.entities;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class Ships {
 	
-	private static final Logger LOG = LogManager.getLogger(Ships.class);
 	private Scanner sc = new Scanner(System.in);
 	private int maxNumberOfShips;
 	private int numberOfShips;
@@ -36,7 +32,7 @@ public class Ships {
 				}
 			}
 		} catch(InputMismatchException e) {
-			LOG.error("Enter with a integer number.");
+			System.out.println("Enter with a integer number.");
 			System.exit(-1);
 		}
 	}
