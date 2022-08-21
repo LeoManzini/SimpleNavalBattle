@@ -287,11 +287,19 @@ public abstract class GameExecutor {
 			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]][player.getPlayerPosition()[player
 					.getYPOSITION()]] = ShipPositions.HIT.getIntValue();
 			player.setPlayerShips(player.getPlayerShips() - 1);
-			System.out.println("\nYou hit a ship!\n");
+			if (player.getHuman()) {
+				System.out.println("\nComputer hit a ship!\n");
+			} else {
+				System.out.println("\nYou hit a ship!\n");
+			}
 		} else {
 			player.getPlayerBoard()[player.getPlayerPosition()[player.getXPOSITION()]][player.getPlayerPosition()[player
 					.getYPOSITION()]] = ShipPositions.MISSED.getIntValue();
-			System.out.println("\nYou missed the shot...\n");
+			if (player.getHuman()) {
+				System.out.println("\nComputer missed the shot...\n");
+			} else {
+				System.out.println("\nYou missed the shot...\n");
+			}
 		}
 	}
 
@@ -332,7 +340,7 @@ public abstract class GameExecutor {
 			return true;
 		default:
 			System.out.println("\nThank you for play! We hope to see you again!");
-			System.out.println("Leonardo Henrique Manzini - Jr. Systems Developer.");
+			System.out.println("Leonardo Henrique Manzini - Mid System Developer.");
 			System.out.println("Find me at GitHub: https://github.com/LeoManzini");
 			System.out.println("Find me at Linkedin: https://www.linkedin.com/in/leonardo-manzini/");
 			return false;
