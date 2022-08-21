@@ -37,7 +37,7 @@ public abstract class GameExecutor {
 				closeAll();
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println(e);
 			System.exit(-1);
 		}
 	}

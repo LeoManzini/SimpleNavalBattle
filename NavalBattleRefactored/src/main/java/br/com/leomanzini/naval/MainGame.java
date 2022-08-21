@@ -21,7 +21,7 @@ public class MainGame {
 			GameExecutor.startGame(board, player1, computerPlayer, ships);
 			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println(e);
 			System.exit(-1);
 		}
 	}
